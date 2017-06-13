@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" />
+    <style>
+        span.field-validation-error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div style="width:90%; margin: 0 auto" class="tablecontainer"> 
@@ -34,6 +39,7 @@
 
     <script src="~/scripts/jquery-3.1.1.min.js"></script>
     <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="~/scripts/jquery-ui-1.12.1.min.js"></script>
     <script>
@@ -69,7 +75,12 @@
             })
             function OpenPopup(pageUrl) {
                 var $pageContent = $('<div/>');
-                $pageContent.load(pageUrl);
+                $pageContent.load(pageUrl, function () {
+                    $('#popupForm', $pageContent).removeData('validator');
+                    $('#popupForm', $pageContent).removeData('unobtrusiveValidation');
+                    $.validator.unobtrusive.parse('form');
+                });
+
                 $dialog = $('<div class="popupWindow" style="overflow: auto"></div>')
                            .html($pageContent)
                            .dialog({
