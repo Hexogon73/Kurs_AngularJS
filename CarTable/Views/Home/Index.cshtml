@@ -14,7 +14,7 @@
     <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <div style="width:90%; margin: 0 auto"> 
+    <div style="width:90%; margin: 0 auto" class="tablecontainer"> 
         <table id="Cars">
             <thead>
                 <tr>
@@ -24,6 +24,8 @@
                     <th>Registration_date</th>
                     <th>Owner</th>
                     <th>Registration_place</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
         </table>
@@ -47,9 +49,60 @@
                     { "data": "Numer", "autoWidth": true },
                     { "data": "Registration_date", "autoWidth": true },
                     { "data": "Owner", "autoWidth": true },
-                    { "data": "Registration_place", "autoWidth": true }
+                    { "data": "Registration_place", "autoWidth" : true },
+                    {
+                        "data": "CarID", "width": "50px", "render": function (data) {
+                            return '<a class="popup" href="/home/save/'+data+'">Edit</a>';
+                        }
+                    },
+                    {
+                        "data": "CarID", "width": "50px", "render": function (data) {
+                            return '<a class="popup" href="/home/delete/' + data + '">Delete</a>';
+                        }
+                    }
                 ]
             })
+            $('.tablecontainer').on('click', 'a.popup', function(e){
+                e.preventDefault();
+                OpenPopup($(this).attr('href'));
+            })
+            function OpenPopup(pageUrl) {
+                var $pageContent = $('<div/>');
+                $pageContent.load(pageUrl);
+                $dialog = $('<div class="popupWindow" style="overflow: auto"></div>')
+                           .html($pageContent)
+                           .dialog({
+                               draggable : false,
+                               autoopen : false,
+                               model: true,
+                               title : 'Popup Dialog',
+                               height: 550,
+                               width: 600,
+                               close: function () {
+                                   $dialog.dialog('destoy').remove();
+                               }
+                           })
+
+                $('.popupWindow').on('submit', '#popupForm', function (e) {
+                    var url = $('#popupForm')[0].action;
+                    $.ajax({
+                        type : "POST",
+                        url : url,
+                        data: $('#popupForm').serialize(),
+                        success: function (data) {
+                            if(data.status)
+                            {
+                                $dialog.dialog('close');
+                                oTable.ajax.reload();
+                            }
+                        }
+                    })
+
+                    e.preventDefault();
+                })
+
+                $dialog.dialog('open');
+            }
         })
     </script>
 </body>
