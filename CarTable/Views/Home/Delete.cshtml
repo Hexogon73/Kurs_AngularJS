@@ -1,0 +1,40 @@
+﻿@model CarTable.Models.Car
+
+<h2>Delete Car</h2>
+@using (Html.BeginForm("delete", "home", FormMethod.Post, new { id = "popupForm" }))
+    {
+        @Html.HiddenFor(a => a.CarID)
+        <div class="form-group">
+            <label>Brand</label>
+            <p>@Model.Brand</p>
+        </div>
+
+        <div class="form-group">
+            <label>Model</label>
+            <p>@Model.Model</p>
+        </div>
+
+        <div class="form-group">
+            <label>Number</label>
+            <p>@Model.Number</p>
+        </div>
+
+        <div class="form-group">
+            <label>Registration_date</label>
+            <p>@Model.Registration_date</p>
+        </div>
+
+        <div class="form-group">
+            <label>Owner</label>
+            <p>@Model.Owner</p>
+        </div>
+
+        <div class="form-group">
+            <label>Registration_place</label>
+            <p>@Model.Registration_place</p>
+        </div>
+
+        <div>
+            <input type="submit" value="Delete" />
+        </div>
+    }

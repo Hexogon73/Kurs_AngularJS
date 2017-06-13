@@ -197,6 +197,7 @@
     <Content Include="scripts\jquery.validate.min.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Home\Save.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
